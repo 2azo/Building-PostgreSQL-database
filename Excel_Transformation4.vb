@@ -380,11 +380,11 @@ Sub F_slurryMaterial()
     Range("H2:H6").Select
     Range("I1").Select
     ActiveCell.FormulaR1C1 = "solved_in"
+    
     Range("I2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(OR(Schlickerherstellung!R[15]C[-5]=R2C3,Schlickerherstellung!R[15]C[-5]=R3C3,Schlickerherstellung!R[15]C[-5]=R4C3,Schlickerherstellung!R[15]C[-5]=R5C3,Schlickerherstellung!R[15]C[-5]=R6C3),IF(Schlickerherstellung!R[15]C[-5]=R2C3,R2C1,IF(Schlickerherstellung!R[15]C[-5]=R3C3,R3C1,IF(Schlickerherstellung!R[15]C[-5]=R4C3,R4C1,IF(Schlickerherstellung!R[15]C[-5]=R5C3," & _
-        "R5C1,IF(Schlickerherstellung!R[15]C[-5]=R6C3,R6C1,""""))))),"""")" & _
-        ""
+    Selection.FormulaR1C1 = "=Schlickerherstellung!R[15]C[-5]"
+        
+        
     Selection.AutoFill Destination:=Range("I2:I6")
     Range("I2:I6").Select
     Range("A1:I6").Select
@@ -409,8 +409,6 @@ Sub F_slurryMaterial()
     Range("A1:I6").Select
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$I$6"), , xlYes).Name = _
         "slurry_materials"
-
-
 
 
     ' adding project and experiement name to material addition step and slurry material
