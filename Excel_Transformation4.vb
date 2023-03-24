@@ -1,3 +1,17 @@
+Sub H_RunAllMacros(wb As Workbook)
+    
+    'Application.ScreenUpdating = False
+    Call Tables_names
+    Call A_projects
+    Call B_experiments
+    Call C_measu_steps
+    Call D_processing_steps
+    Call E_MaterialAdditionSteps
+    Call F_slurryMaterial
+    G_DeleteSheets wb
+    'Application.ScreenUpdating = True
+End Sub
+
 Sub A_projects()
 '
 ' 1.projects Macro
@@ -150,7 +164,7 @@ End Sub
 
 Sub D_processing_steps()
 '
-' test_processing_step Macro (passed)
+' test_processing_step Macro
 '
 
 '
@@ -192,14 +206,26 @@ Sub D_processing_steps()
     Selection.AutoFill Destination:=Range("E2:E5"), Type:=xlFillDefault
     
     Range("D2").Select
+    'ActiveCell.FormulaR1C1 = _
+    '    "=IF([@[processing_step_number]] =measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
     ActiveCell.FormulaR1C1 = _
-        "=IF([@[processing_step_number]] =measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
+        "=IF(RC[1]=measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
     Range("D3").Select
+    Range("D2").Select
+    Selection.AutoFill Destination:=Range("D2:D5"), Type:=xlFillDefault
 
     Range("F1").Select
     ActiveCell.FormulaR1C1 = "description"
     Range("F2").Select
     ActiveCell.Formula2R1C1 = "=Description"
+    
+    'Sheets("Schlickerherstellung").Select
+    'Range("B38:B42").Select
+    'Application.CutCopyMode = False
+    'ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$38:$B$42"), , xlYes).Name = _
+    '    "Description"
+    'Range("Table14[[#All],[Beschreibung]]").Select
+    'ActiveSheet.ListObjects("Table14").Name = "Description"
 
     Sheets("4.proces.steps").Select
     Range("F2").Select
@@ -251,79 +277,68 @@ End Sub
 
 Sub E_MaterialAdditionSteps()
 '
-' MaterialAdditionSteps Macro
+' test_material_addition_steps Macro
 '
 
 '
     Sheets.Add After:=ActiveSheet
     ActiveSheet.Name = "5.mater.add.steps"
     
-    ' material_addition_step_id
-
-
-    ' experiment_name
-    Range("B1").Select
-    Selection.FormulaR1C1 = "experiment_name"
-    Range("B2").Select
-    Selection.FormulaR1C1 = "=Schlickerherstellung!R1C2"
-    Selection.AutoFill Destination:=Range("B2:B6")
+    ActiveCell.FormulaR1C1 = "material_addition_step_id"
+    Range("A2").Select
+    ActiveCell.Formula2R1C1 = "=material_addition_step_id"
     
-    ' project_name
+    Range("B1").Select
+    ActiveCell.FormulaR1C1 = "experiment_name"
+    Range("B2").Select
+    ActiveCell.FormulaR1C1 = "=experiment_name"
+    Range("B2").Select
+    Selection.AutoFill Destination:=Range("B2:B7")
+    
     Range("C1").Select
     ActiveCell.FormulaR1C1 = "project_name"
     Range("C2").Select
-    Selection.FormulaR1C1 = "=Schlickerherstellung!R1C4"
-    Selection.AutoFill Destination:=Range("C2:C6")
-
-    ' processing_step_number
-    ' =IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$39));1;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$40));2;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$41));3;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$42));4;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$43));5)))))
+    ActiveCell.FormulaR1C1 = "=project_name"
+    Range("C2").Select
+    Selection.AutoFill Destination:=Range("C2:C7")
+    
     Range("D1").Select
     ActiveCell.FormulaR1C1 = "processing_step_number"
     Range("D2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(ISNUMBER(FIND(RC[-3],Schlickerherstellung!R39C1)),1,IF(ISNUMBER(FIND(RC[-3],Schlickerherstellung!R40C1)),2,IF(ISNUMBER(FIND(RC[-3],Schlickerherstellung!R41C1)),3,IF(ISNUMBER(FIND(RC[-3],Schlickerherstellung!R42C1)),4,IF(ISNUMBER(FIND(RC[-3],Schlickerherstellung!R43C1)),5)))))"
-    Selection.AutoFill Destination:=Range("D2:D6")
-    Range("D2:D6").Select
-
-    ' slurry_material_id
+    ActiveCell.FormulaR1C1 = _
+        "=IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R39C1)),1,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R40C1)),2,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R41C1)),3,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R42C1)),4,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3" & _
+        "],Schlickerherstellung!R43C1)),5)))))" & _
+        ""
+    Range("D2").Select
+    Selection.AutoFill Destination:=Range("D2:D7")
+    
     Range("E1").Select
     ActiveCell.FormulaR1C1 = "slurry_material_id"
-
-    ' material_addition_step_number
-    ' from one to 6
-    ActiveCell.FormulaR1C1 = "material_addition_step_number"
-    Range("A2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[24]C[1])),Schlickerherstellung!R[24]C)"
-    Selection.AutoFill Destination:=Range("A2:A8"), Type:=xlFillDefault
-    Range("A2:A8").Select
-
-    ' material_mass
+    
     Range("F1").Select
-    ActiveCell.FormulaR1C1 = "material_mass_g"
+    ActiveCell.FormulaR1C1 = "material_addition_step_number"
     Range("F2").Select
-    Selection.FormulaR1C1 = "=Schlickerherstellung!R[24]C[-1]"
-    Selection.AutoFill Destination:=Range("F2:F6")
-    Range("F2:F6").Select
-
-    Range("A1:F6").Select
+    ActiveCell.FormulaR1C1 = "1"
+    Range("F3").Select
+    ActiveCell.FormulaR1C1 = "2"
+    Range("F2:F3").Select
+    Selection.AutoFill Destination:=Range("F2:F7"), Type:=xlFillDefault
+    
+    Range("G1").Select
+    ActiveCell.FormulaR1C1 = "material_mass"
+    Range("G2").Select
+    ActiveCell.Formula2R1C1 = "=Material_add_mass_order"
+    
+    Range("A1:G7").Select
     Selection.Copy
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
-    ActiveWorkbook.Save
+    Selection.PasteSpecial Paste:=xlPasteValues
+    Range("A1:G6").Select
+    Application.CutCopyMode = False
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$G$6"), , xlYes).Name = _
+        "Table32"
+    Range("Table32[#All]").Select
+    ActiveSheet.ListObjects("Table32").Name = "material_addition_steps"
     
-    Dim lastRow As Long, i As Long
-
-    lastRow = ActiveSheet.Cells(Rows.Count, "A").End(xlUp).Row
-
-    For i = lastRow To 2 Step -1 'iterate from the last row to the second row
-        If Application.WorksheetFunction.CountIf(Range("A" & i & ":Z" & i), "FALSE") > 0 Then
-            Rows(i).Delete
-        End If
-            Next i
-    
-    Range("A1:F6").Select
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$F$6"), , xlYes).Name = _
-        "material_addition_steps"
     
 End Sub
 
@@ -331,154 +346,112 @@ Sub F_slurryMaterial()
 '
 ' SlurryMaterial Macro
 '
-
 '
     Sheets.Add After:=ActiveSheet
     ActiveSheet.Name = "6.slurry.mater."
-    Range("A1").Select
+
     ActiveCell.FormulaR1C1 = "slurry_material_id"
     Range("A2").Select
-    ActiveCell.FormulaR1C1 = "1"
-    Range("A3").Select
-    Selection.FormulaR1C1 = "2"
-    Range("A2:A3").Select
-    Selection.AutoFill Destination:=Range("A2:A6")
-    Range("A2:A6").Select
+    ActiveCell.Formula2R1C1 = "=slurry_material_id"
+    
     Range("B1").Select
-    ActiveCell.FormulaR1C1 = "material_addition_step_number"
-    Range("C1").Select
-    ActiveCell.FormulaR1C1 = "material_name"
-    Range("C2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[6]C[-2])),Schlickerherstellung!R[6]C[-2],IF(ISBLANK(Schlickerherstellung!R8C5),0,Schlickerherstellung!R8C5))"
-    Selection.AutoFill Destination:=Range("C2:C6")
-    Range("C2:C6").Select
+    ActiveCell.FormulaR1C1 = "experiment_name"
     Range("B2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(RC[1]=Schlickerherstellung!R26C2,Schlickerherstellung!R26C1,IF(RC[1]=Schlickerherstellung!R27C2,Schlickerherstellung!R27C1,IF(RC[1]=Schlickerherstellung!R28C2,Schlickerherstellung!R28C1,IF(RC[1]=Schlickerherstellung!R29C2,Schlickerherstellung!R29C1,IF(RC[1]=Schlickerherstellung!R30C2,Schlickerherstellung!R30C1,""FALSE"")))))"
+    Selection.FormulaR1C1 = "=experiment_name"
     Selection.AutoFill Destination:=Range("B2:B6")
     Range("B2:B6").Select
-    Range("D1").Select
-    ActiveCell.FormulaR1C1 = "percentage"
-    Range("D2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[6]C[-3])),Schlickerherstellung!R[6]C[-2],IF(ISBLANK(Schlickerherstellung!R8C5),0,Schlickerherstellung!R8C6))"
-    Selection.AutoFill Destination:=Range("D2:D6")
-    Range("D2:D6").Select
-    Range("E1").Select
-    ActiveCell.FormulaR1C1 = "density_gram_over_cupic_cm"
-    Range("E2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[6]C[-4])),Schlickerherstellung!R[6]C[-2],0)"
-    Selection.AutoFill Destination:=Range("E2:E6")
-    Range("E2:E6").Select
-    ActiveWorkbook.Save
-    Range("F1").Select
-    ActiveCell.FormulaR1C1 = "material_function"
-    Range("G1").Select
-    Selection.FormulaR1C1 = "material_type"
-    Range("G2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[6]C[-6])),Schlickerherstellung!R[15]C[-5],""Lösungmittel"")"
-    Selection.AutoFill Destination:=Range("G2:G6")
-    Range("G2:G6").Select
-    Range("H1").Select
-    ActiveCell.FormulaR1C1 = "concentration_percentage"
-    Range("H2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[6]C[-7])),Schlickerherstellung!R[15]C[-5],0)"
-    Selection.AutoFill Destination:=Range("H2:H6")
-    Range("H2:H6").Select
-    Range("I1").Select
-    ActiveCell.FormulaR1C1 = "solved_in"
     
-    Range("I2").Select
-    Selection.FormulaR1C1 = "=Schlickerherstellung!R[15]C[-5]"
-        
-        
-    Selection.AutoFill Destination:=Range("I2:I6")
-    Range("I2:I6").Select
-    Range("A1:I6").Select
-    Selection.Copy
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
-    ActiveWorkbook.Save
-    
-    ' now adding the missing part of material addition table
-    
-    Sheets("5.mater.add.steps").Select
+    Range("C1").Select
+    ActiveCell.FormulaR1C1 = "project_name"
     Range("C2").Select
-    Selection.FormulaR1C1 = _
-        "=INDEX(6.slurry.mater.!R2C1:R6C1, MATCH(Schlickerherstellung!R[24]C[-1], 6.slurry.mater.!R2C3:R6C3, 0))"
+    Selection.FormulaR1C1 = "=project_name"
     Selection.AutoFill Destination:=Range("C2:C6")
     Range("C2:C6").Select
+    
+    Range("D1").Select
+    ActiveCell.FormulaR1C1 = "material_addition_step_id"
+    
+    Range("E1").Select
+    ActiveCell.FormulaR1C1 = "slurry_material_number"
+    Range("E2").Select
+    ActiveCell.FormulaR1C1 = "1"
+    Range("E3").Select
+    ActiveCell.FormulaR1C1 = "2"
+    Range("E2:E3").Select
+    Selection.AutoFill Destination:=Range("E2:E6"), Type:=xlFillDefault
+    Range("E2:E6").Select
+    
+    Range("F1").Select
+    ActiveCell.FormulaR1C1 = "material_name"
+    Range("F2").Select
+    Selection.Formula2R1C1 = "=Slurry_materials_names"
+    
+    Range("G1").Select
+    ActiveCell.FormulaR1C1 = "percentage"
+    Range("G2").Select
+    ActiveCell.Formula2R1C1 = "=Slurry_materials_percentage"
+    
+    Range("H1").Select
+    ActiveCell.FormulaR1C1 = "density_gram_over_cupic_cm"
+    Range("H2").Select
+    ActiveCell.Formula2R1C1 = "=Slurry_materials_densiry"
+    
+    Range("I1").Select
+    ActiveCell.FormulaR1C1 = "material_function"
+    
+    Range("J1").Select
+    ActiveCell.FormulaR1C1 = "material_type"
+    Range("J2").Select
+    ActiveCell.Formula2R1C1 = "=Slurry_material_type"
+    
+    Range("K1").Select
+    ActiveCell.FormulaR1C1 = "concentration"
+    Range("K2").Select
+    ActiveCell.Formula2R1C1 = "=Slurry_materials_concentration"
+    
+    Range("L1").Select
+    ActiveCell.FormulaR1C1 = "solved_in"
+    Range("L2").Select
+    ActiveCell.Formula2R1C1 = "=Solved_in"
+    
+    Range("A1:L6").Select
     Selection.Copy
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
     
-    
+    Sheets("5.mater.add.steps").Select
+    Range("E2").Select
+    Selection.FormulaR1C1 = _
+        "=INDEX('6.slurry.mater.'!R2C1:R6C1, MATCH(Schlickerherstellung!R[24]C[-3], '6.slurry.mater.'!R2C6:R6C6,0))"
+    'Range("E2:E3").Select
+    'Selection.AutoFill Destination:=Range("E2:E6"), Type:=xlFillDefault
     
     Sheets("6.slurry.mater.").Select
-    Range("A1:I6").Select
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$I$6"), , xlYes).Name = _
-        "slurry_materials"
-
-
-    ' adding project and experiement name to material addition step and slurry material
-        Sheets("5.mater.add.steps").Select
-    Columns("B:B").Select
-    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
-    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
-    Range("material_addition_steps[[#Headers],[Column2]]").Select
-    ActiveCell.FormulaR1C1 = "Column2"
-    Sheets("2.experiments").Select
-    ActiveCell.FormulaR1C1 = "experiment_name"
-    Sheets("5.mater.add.steps").Select
-    ActiveCell.FormulaR1C1 = "experiment_name"
-    Range("B2").Select
-    ' Selection.FormulaR1C1 = "=experiments[@[experiment_name]]"
-    Selection.Formula2R1C1 = "=experiments[experiment_name]"
-    Range("material_addition_steps[[#Headers],[Column1]]").Select
-    ActiveCell.FormulaR1C1 = "Column1"
-    Sheets("2.experiments").Select
-    Range("experiments[[#Headers],[project_name]]").Select
-    ActiveCell.FormulaR1C1 = "project_name"
-    Sheets("5.mater.add.steps").Select
-    ActiveCell.FormulaR1C1 = "project_name"
-    Range("C2").Select
-    ' Selection.FormulaR1C1 = "=experiments[@[project_name]]"
-    Selection.Formula2R1C1 = "=experiments[project_name]"
-    Range("material_addition_steps[[#All],[experiment_name]:[project_name]]"). _
-        Select
-    Selection.Copy
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
+    Range("A1:L6").Select
+    Range("L1").Activate
     Application.CutCopyMode = False
-    Range("C3").Select
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$L$6"), , xlYes).Name = _
+        "Table33"
+    Range("Table33[#All]").Select
+    ActiveSheet.ListObjects("Table33").Name = "slurry_materials"
+    
     Sheets("6.slurry.mater.").Select
-    Columns("B:B").Select
-    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
-    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
-    Range("slurry_materials[[#Headers],[Column2]]").Select
-    Sheets("5.mater.add.steps").Select
-    Range("material_addition_steps[[#Headers],[experiment_name]]").Select
-    ActiveCell.FormulaR1C1 = "experiment_name"
-    Sheets("6.slurry.mater.").Select
-    ActiveCell.FormulaR1C1 = "experiment_name"
-    Range("B2").Select
-    ActiveCell.FormulaR1C1 = "=material_addition_steps[@[experiment_name]]"
-    Range("slurry_materials[[#Headers],[Column1]]").Select
-    ActiveCell.FormulaR1C1 = "Column1"
-    Sheets("5.mater.add.steps").Select
-    Range("material_addition_steps[[#Headers],[project_name]]").Select
-    ActiveCell.FormulaR1C1 = "project_name"
-    Sheets("6.slurry.mater.").Select
-    ActiveCell.FormulaR1C1 = "project_name"
-    Range("C2").Select
-    Selection.FormulaR1C1 = "=material_addition_steps[@[project_name]]"
-    Range("slurry_materials[[#All],[experiment_name]:[project_name]]").Select
+    Range("D2").Select
+    ActiveCell.FormulaR1C1 = _
+        "=IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R2C5,'5.mater.add.steps'!R2C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R3C5,'5.mater.add.steps'!R3C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R4C5,'5.mater.add.steps'!R4C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R5C5,'5.mater.add.steps'!R5C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R6C5,'5" & _
+        ".mater.add.steps'!R6C1)))))" & _
+        ""
+    Range("slurry_materials[material_addition_step_id]").Select
     Selection.Copy
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+    Sheets("5.mater.add.steps").Select
+    Range("E2:E6").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
     Application.CutCopyMode = False
-    Range("D10").Select
-    ActiveWorkbook.Save
     
 End Sub
 
@@ -489,7 +462,7 @@ Sub G_DeleteSheets(wb As Workbook)
     For Each ws In wb.Worksheets
         ' Check if the sheet name matches any of the target names
         Select Case ws.Name
-            Case "Arbeitsauftrag", "Regression", "Hilfstabelle", "Kalandrieren", "Beschichtung", "Kalibrierung", "QM", "Schlickerherstellung"
+            Case "Arbeitsauftrag", "Regression", "Hilfstabelle", "Kalandrieren", "Beschichtung", "Kalibrierung", "QM", "Schlickerherstellung", "Incremental", "IncrementalSheet"
                 ' Delete the sheet
                 Application.DisplayAlerts = False ' Suppress the confirmation message
                 ws.Unprotect
@@ -568,7 +541,7 @@ Sub Tables_names()
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$16:$B$21"), , xlYes).Name = _
         "Table6"
     Range("Table6[[#All],[Zugabe]]").Select
-    ActiveSheet.ListObjects("Table6").Name = "Slurry_material_function"
+    ActiveSheet.ListObjects("Table6").Name = "Slurry_material_type"
     
     Range("C16:C21").Select
     Application.CutCopyMode = False
@@ -701,20 +674,6 @@ End Sub
 
 
 
-Sub H_RunAllMacros(wb As Workbook)
-    
-    'Application.ScreenUpdating = False
-    Call Tables_names
-    Call A_projects
-    Call B_experiments
-    Call C_measu_steps
-    Call D_processing_steps
-    'Call E_MaterialAdditionSteps
-    'Call F_slurryMaterial
-    'G_DeleteSheets wb
-    'Application.ScreenUpdating = True
-End Sub
-
 ' test succeeded
 Sub IncrementalSheet(Path)
     ' Dim Path As String
@@ -727,6 +686,9 @@ Sub IncrementalSheet(Path)
     Static measurement_counter As Integer
     measurement_counter = 0
     processing_counter = 0
+    material_addition_step_counter = 0
+    slurry_material_counter = 0
+    
 
     ' loop through all files in the folder
     FileNameNew = Dir(Path & "*.xlsx")
@@ -734,6 +696,8 @@ Sub IncrementalSheet(Path)
     Do While FileNameNew <> ""
         measurement_counter = measurement_counter + 1
         processing_counter = processing_counter + 1
+        material_addition_step_counter = material_addition_step_counter + 1
+        slurry_material_counter = slurry_material_counter + 1
         
         Set wbNew = Workbooks.Open(Path & FileNameNew)
 
@@ -763,8 +727,32 @@ Sub IncrementalSheet(Path)
         Selection.AutoFill Destination:=Range("B2:B5"), Type:=xlFillDefault
         Range("B2:B5").Select
         processing_counter = Range("B5")
+        
+        ' material_addition_step_counter
+        Range("C1").Select
+        ActiveCell.FormulaR1C1 = "material_addition_step_id"
+        Range("C2").Select
+        Selection.FormulaR1C1 = material_addition_step_counter
+        Range("C3").Select
+        Selection.FormulaR1C1 = material_addition_step_counter + 1
+        Range("C2:C3").Select
+        Selection.AutoFill Destination:=Range("C2:C7"), Type:=xlFillDefault
+        Range("C2:C7").Select
+        material_addition_step_counter = Range("C7")
+        
+        ' slurry_material_counter
+        Range("D1").Select
+        ActiveCell.FormulaR1C1 = "slurry_material_id"
+        Range("D2").Select
+        Selection.FormulaR1C1 = slurry_material_counter
+        Range("D3").Select
+        Selection.FormulaR1C1 = slurry_material_counter + 1
+        Range("D2:D3").Select
+        Selection.AutoFill Destination:=Range("D2:D6"), Type:=xlFillDefault
+        Range("D2:D4").Select
+        slurry_material_counter = Range("D6")
 
-        ' adding table
+        ' adding tables
         Range("A1:A6").Select
         ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$A$6"), , xlYes).Name = _
         "measurement_steps_id"
@@ -772,6 +760,14 @@ Sub IncrementalSheet(Path)
         Range("B1:B5").Select
         ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$1:$B$5"), , xlYes).Name = _
         "processing_step_id"
+        
+        Range("C1:C7").Select
+        ActiveSheet.ListObjects.Add(xlSrcRange, Range("$C$1:$C$7"), , xlYes).Name = _
+        "material_addition_step_id"
+        
+        Range("D1:D6").Select
+        ActiveSheet.ListObjects.Add(xlSrcRange, Range("$D$1:$D$6"), , xlYes).Name = _
+        "slurry_material_id"
 
         wbNew.Close SaveChanges:=True
         
