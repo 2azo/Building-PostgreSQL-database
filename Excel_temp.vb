@@ -150,7 +150,7 @@ End Sub
 
 Sub D_processing_steps()
 '
-' test_processing_step Macro (passed)
+' test_processing_step Macro
 '
 
 '
@@ -192,14 +192,26 @@ Sub D_processing_steps()
     Selection.AutoFill Destination:=Range("E2:E5"), Type:=xlFillDefault
     
     Range("D2").Select
+    'ActiveCell.FormulaR1C1 = _
+    '    "=IF([@[processing_step_number]] =measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
     ActiveCell.FormulaR1C1 = _
-        "=IF([@[processing_step_number]] =measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
+        "=IF(RC[1]=measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
     Range("D3").Select
+    Range("D2").Select
+    Selection.AutoFill Destination:=Range("D2:D5"), Type:=xlFillDefault
 
     Range("F1").Select
     ActiveCell.FormulaR1C1 = "description"
     Range("F2").Select
     ActiveCell.Formula2R1C1 = "=Description"
+    
+    'Sheets("Schlickerherstellung").Select
+    'Range("B38:B42").Select
+    'Application.CutCopyMode = False
+    'ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$38:$B$42"), , xlYes).Name = _
+    '    "Description"
+    'Range("Table14[[#All],[Beschreibung]]").Select
+    'ActiveSheet.ListObjects("Table14").Name = "Description"
 
     Sheets("4.proces.steps").Select
     Range("F2").Select
@@ -257,26 +269,27 @@ Sub E_MaterialAdditionSteps()
 '
     Sheets.Add After:=ActiveSheet
     ActiveSheet.Name = "5.mater.add.steps"
-    
-    ' material_addition_step_id
+    ActiveCell.FormulaR1C1 = "material_addition_step_number"
+    Range("A2").Select
+    Selection.FormulaR1C1 = _
+        "=IF(NOT(ISBLANK(Schlickerherstellung!R[24]C[1])),Schlickerherstellung!R[24]C)"
+    Selection.AutoFill Destination:=Range("A2:A8"), Type:=xlFillDefault
+    Range("A2:A8").Select
 
-
-    ' experiment_name
+    ' adding project name and experiment
     Range("B1").Select
     Selection.FormulaR1C1 = "experiment_name"
     Range("B2").Select
     Selection.FormulaR1C1 = "=Schlickerherstellung!R1C2"
     Selection.AutoFill Destination:=Range("B2:B6")
     
-    ' project_name
     Range("C1").Select
     ActiveCell.FormulaR1C1 = "project_name"
     Range("C2").Select
     Selection.FormulaR1C1 = "=Schlickerherstellung!R1C4"
     Selection.AutoFill Destination:=Range("C2:C6")
 
-    ' processing_step_number
-    ' =IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$39));1;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$40));2;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$41));3;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$42));4;IF(ISNUMBER(FIND(Schlickerherstellung!A26;Schlickerherstellung!$A$43));5)))))
+    ' shifting two column to the right
     Range("D1").Select
     ActiveCell.FormulaR1C1 = "processing_step_number"
     Range("D2").Select
@@ -285,20 +298,9 @@ Sub E_MaterialAdditionSteps()
     Selection.AutoFill Destination:=Range("D2:D6")
     Range("D2:D6").Select
 
-    ' slurry_material_id
     Range("E1").Select
     ActiveCell.FormulaR1C1 = "slurry_material_id"
 
-    ' material_addition_step_number
-    ' from one to 6
-    ActiveCell.FormulaR1C1 = "material_addition_step_number"
-    Range("A2").Select
-    Selection.FormulaR1C1 = _
-        "=IF(NOT(ISBLANK(Schlickerherstellung!R[24]C[1])),Schlickerherstellung!R[24]C)"
-    Selection.AutoFill Destination:=Range("A2:A8"), Type:=xlFillDefault
-    Range("A2:A8").Select
-
-    ' material_mass
     Range("F1").Select
     ActiveCell.FormulaR1C1 = "material_mass_g"
     Range("F2").Select
@@ -727,6 +729,8 @@ Sub IncrementalSheet(Path)
     Static measurement_counter As Integer
     measurement_counter = 0
     processing_counter = 0
+    material_addition_step_counter = 0
+    
 
     ' loop through all files in the folder
     FileNameNew = Dir(Path & "*.xlsx")
@@ -734,6 +738,7 @@ Sub IncrementalSheet(Path)
     Do While FileNameNew <> ""
         measurement_counter = measurement_counter + 1
         processing_counter = processing_counter + 1
+        material_addition_step_counter = material_addition_step_counter + 1
         
         Set wbNew = Workbooks.Open(Path & FileNameNew)
 
@@ -763,8 +768,20 @@ Sub IncrementalSheet(Path)
         Selection.AutoFill Destination:=Range("B2:B5"), Type:=xlFillDefault
         Range("B2:B5").Select
         processing_counter = Range("B5")
+        
+        ' material_addition_step_counter
+        Range("C1").Select
+        ActiveCell.FormulaR1C1 = "material_addition_step_counter"
+        Range("C2").Select
+        Selection.FormulaR1C1 = material_addition_step_counter
+        Range("C3").Select
+        Selection.FormulaR1C1 = material_addition_step_counter + 1
+        Range("C2:C3").Select
+        Selection.AutoFill Destination:=Range("C2:C7"), Type:=xlFillDefault
+        Range("C2:C7").Select
+        material_addition_step_counter = Range("C7")
 
-        ' adding table
+        ' adding tables
         Range("A1:A6").Select
         ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$A$6"), , xlYes).Name = _
         "measurement_steps_id"
@@ -772,6 +789,10 @@ Sub IncrementalSheet(Path)
         Range("B1:B5").Select
         ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$1:$B$5"), , xlYes).Name = _
         "processing_step_id"
+        
+        Range("C1:C7").Select
+        ActiveSheet.ListObjects.Add(xlSrcRange, Range("$C$1:$C$7"), , xlYes).Name = _
+        "material_addition_step_id"
 
         wbNew.Close SaveChanges:=True
         
