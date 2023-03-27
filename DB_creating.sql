@@ -37,10 +37,10 @@ FOREIGN KEY (experiment_name,project_name) REFERENCES experiment(experiment_name
 
 CREATE TABLE processing_step(
 processing_step_id SERIAL PRIMARY KEY,
-processing_step_number SMALLINT NOT NULL,
 experiment_name VARCHAR NOT NULL,
 project_name VARCHAR NOT NULL,
 measurement_step_id SMALLINT REFERENCES measurement_step(measurement_step_id),
+processing_step_number SMALLINT NOT NULL,
 description VARCHAR,
 mixing_speed_1_rpm SMALLINT,
 mixing_speed_2_rpm SMALLINT,
@@ -53,9 +53,9 @@ FOREIGN KEY (experiment_name,project_name) REFERENCES experiment(experiment_name
 
 CREATE TABLE material_addition_step(
 material_addition_step_id SERIAL PRIMARY KEY,
-material_addition_step_number SMALLINT NOT NULL,
 experiment_name VARCHAR NOT NULL,
 project_name VARCHAR NOT NULL,
+material_addition_step_number SMALLINT NOT NULL,
 processing_step_id SMALLINT REFERENCES processing_step(processing_step_id),
 slurry_material_id SMALLINT, -- add REFERENCES slurry_material(slurry_material_id) after creating slurry materials table
 material_mass_g SMALLINT,
