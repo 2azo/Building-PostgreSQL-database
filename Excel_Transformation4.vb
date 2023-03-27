@@ -263,7 +263,7 @@ Sub D_processing_steps()
     ActiveCell.Formula2R1C1 = "=Time"
     
     Range("J1").Select
-    ActiveCell.FormulaR1C1 = "sieve_size_mu_m"""
+    ActiveCell.FormulaR1C1 = "sieve_size_mu_m"
     
     Range("K1").Select
     ActiveCell.FormulaR1C1 = "partial_pressure_mbar"
@@ -501,6 +501,28 @@ Sub F_slurryMaterial()
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
     Application.CutCopyMode = False
+
+    ' replacing the name in solved_in with the id
+    Sheets("6.slurry.mater.").Select
+
+    Range("slurry_material[solved_in]").Select
+    Selection.Cut
+    Range("L10").Select
+    ActiveSheet.Paste
+    Range("L2").Select
+    ActiveCell.FormulaR1C1 = _
+        "=IF(R[8]C=R2C6,R2C1, IF(R[8]C=R3C6,R3C1, IF(R[8]C=R4C6,R4C1, IF(R[8]C=R5C6,R5C1, IF(R[8]C=R6C6,R6C1, 0)))))"
+    Range("L2").Select
+    Selection.AutoFill Destination:=Range("slurry_material[solved_in]")
+    Range("slurry_material[solved_in]").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+
+    Range("L10:L14").Select
+    Selection.Delete Shift:=xlUp
     
 End Sub
 
@@ -861,6 +883,8 @@ Sub RunMacroInAllFiles()
     Loop
     Application.ScreenUpdating = True
 End Sub
+
+
 
 
 

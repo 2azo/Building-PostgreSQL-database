@@ -4,7 +4,7 @@ import os
 import psycopg2
 
 # creating connection
-engine = create_engine("postgresql+psycopg2://postgres:10aabg58@localhost:5432/Electrode_experiments2")
+engine = create_engine("postgresql+psycopg2://postgres:10aabg58@localhost:5432/Electrode_experiment5")
 
 # starting by this code to test
 # with pd.ExcelFile(r'C:\Users\mou95504\Desktop\Test\InMiTro_Kathode_1.xlsx') as xls:
@@ -27,10 +27,10 @@ def sheets(data, file):
         df = pd.read_excel(file, sheet_name=data, index_col=None)
         df.to_sql(name='measurement_step', con=engine, if_exists= 'append', index= False) # name is table name 
     
-    elif(data=='4.Proces.steps'):
+    elif(data=='4.proces.steps'):
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='processing_steps', con=engine, if_exists= 'append', index= False) # name is table name 
+        df.to_sql(name='processing_step', con=engine, if_exists= 'append', index= False) # name is table name 
 
     elif(data=='5.mater.add.steps'):
         # df=pd.read_excel(file)

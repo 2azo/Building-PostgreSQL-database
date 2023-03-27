@@ -1,11 +1,9 @@
 --make any number which is not given, a default value of 0
 
-
 CREATE TABLE project(
 project_name VARCHAR(30) NOT NULL PRIMARY KEY,
 notes VARCHAR
 );
-
 
 CREATE TABLE experiment(
 experiment_name VARCHAR NOT NULL,
@@ -17,7 +15,6 @@ mixing_tool VARCHAR(30),
 mixer VARCHAR(30),
 primary key (experiment_name, project_name)
 );
-
 
 CREATE TABLE measurement_step
 (
@@ -33,7 +30,6 @@ temperature_celsius Double Precision,
 notes VARCHAR,
 FOREIGN KEY (experiment_name,project_name) REFERENCES experiment(experiment_name,project_name)
 );
-
 
 CREATE TABLE processing_step(
 processing_step_id SERIAL PRIMARY KEY,
@@ -55,9 +51,9 @@ CREATE TABLE material_addition_step(
 material_addition_step_id SERIAL PRIMARY KEY,
 experiment_name VARCHAR NOT NULL,
 project_name VARCHAR NOT NULL,
-material_addition_step_number SMALLINT NOT NULL,
 processing_step_id SMALLINT REFERENCES processing_step(processing_step_id),
 slurry_material_id SMALLINT, -- add REFERENCES slurry_material(slurry_material_id) after creating slurry materials table
+material_addition_step_number SMALLINT NOT NULL,
 material_mass_g SMALLINT,
 FOREIGN KEY (experiment_name,project_name) REFERENCES experiment(experiment_name,project_name)
 );
