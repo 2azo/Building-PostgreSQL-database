@@ -116,14 +116,14 @@ Sub C_measu_steps()
     Range("C2").Select
     ActiveCell.FormulaR1C1 = "=experiment_name"
     Range("C2").Select
-    Selection.AutoFill Destination:=Range("C2:C4"), Type:=xlFillDefault
+    Selection.AutoFill Destination:=Range("C2:C6"), Type:=xlFillDefault
 
     Range("D1").Select
     ActiveCell.FormulaR1C1 = "project_name"
     Range("D2").Select
     ActiveCell.FormulaR1C1 = "=project_name"
     Range("D2").Select
-    Selection.AutoFill Destination:=Range("D2:D4"), Type:=xlFillDefault
+    Selection.AutoFill Destination:=Range("D2:D6"), Type:=xlFillDefault
 
     Range("E1").Select
     ActiveCell.FormulaR1C1 = "viscosity_high_1_over_s"
@@ -167,6 +167,11 @@ Sub C_measu_steps()
         "Table25"
     Range("Table25[#All]").Select
     ActiveSheet.ListObjects("Table25").Name = "measurement_step"
+    
+    ' deleting exrtra rows
+    
+    On Error Resume Next
+    Columns("E").SpecialCells(xlBlanks).EntireRow.Delete
     
 End Sub
 
@@ -346,6 +351,11 @@ Sub E_MaterialAdditionSteps()
         "Table32"
     Range("Table32[#All]").Select
     ActiveSheet.ListObjects("Table32").Name = "material_addition_step"
+    
+    ' deleting exrtra rows
+    
+    On Error Resume Next
+    Columns("G").SpecialCells(xlBlanks).EntireRow.Delete
     
     
 End Sub
