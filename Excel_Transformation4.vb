@@ -315,9 +315,11 @@ Sub E_MaterialAdditionSteps()
     Range("C2").Select
     Selection.AutoFill Destination:=Range("C2:C7")
     
+    ' wrong, has to be "processing_step_id", fixed at the end of the macro
     Range("D1").Select
     ActiveCell.FormulaR1C1 = "processing_step_number"
     Range("D2").Select
+    ' =IF(D11='4.proces.steps'!$E$2;'4.proces.steps'!$A$2;IF(D11='4.proces.steps'!$E$3;'4.proces.steps'!$A$3; IF(D11='4.proces.steps'!$E$4;'4.proces.steps'!$A$4; IF(D11='4.proces.steps'!$E$5;'4.proces.steps'!$A$5))))
     ActiveCell.FormulaR1C1 = _
         "=IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R39C1)),1,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R40C1)),2,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R41C1)),3,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3],Schlickerherstellung!R42C1)),4,IF(ISNUMBER(FIND(Schlickerherstellung!R[24]C[-3" & _
         "],Schlickerherstellung!R43C1)),5)))))" & _
@@ -356,6 +358,36 @@ Sub E_MaterialAdditionSteps()
     
     On Error Resume Next
     Columns("G").SpecialCells(xlBlanks).EntireRow.Delete
+
+    ' Replacing processing_step_number with processing_step_id
+    
+    ' steps:
+    ' move the  processing_step_number column to D10
+    ' adding column processing_step_id in D1
+    ' apply the formula in D2 to D6
+    ' =IF(D11='4.proces.steps'!$E$2;'4.proces.steps'!$A$2;IF(D11='4.proces.steps'!$E$3;'4.proces.steps'!$A$3; IF(D11='4.proces.steps'!$E$4;'4.proces.steps'!$A$4; IF(D11='4.proces.steps'!$E$5;'4.proces.steps'!$A$5))))
+    ' delete the processing_step_number column
+    
+    Range("material_addition_step[[#All],[processing_step_number]]").Select
+    Selection.Cut
+    Range("D10").Select
+    ActiveSheet.Paste
+    Range("D10").Select
+    ActiveCell.FormulaR1C1 = "processing_step_number"
+    Range("material_addition_step[[#Headers],[Column1]]").Select
+    ActiveCell.FormulaR1C1 = "processing_step_id"
+    Range("D2").Select
+    ActiveCell.FormulaR1C1 = _
+        "=IF(R[9]C='4.proces.steps'!R2C5,'4.proces.steps'!R2C1,IF(R[9]C='4.proces.steps'!R3C5,'4.proces.steps'!R3C1, IF(R[9]C='4.proces.steps'!R4C5,'4.proces.steps'!R4C1, IF(R[9]C='4.proces.steps'!R5C5,'4.proces.steps'!R5C1))))"
+    Range("material_addition_step[processing_step_id]").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Range("D10:D15").Select
+    Selection.Delete Shift:=xlUp
+    
     
     
 End Sub
@@ -830,6 +862,8 @@ Sub RunMacroInAllFiles()
     Loop
     Application.ScreenUpdating = True
 End Sub
+
+
 
 
 
