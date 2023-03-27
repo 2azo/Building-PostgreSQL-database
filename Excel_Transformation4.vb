@@ -30,7 +30,7 @@ Sub A_projects()
     
     Range("A1:B2").Select
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$B$2"), , xlYes).Name = _
-        "projects"
+        "project"
     
 End Sub
 
@@ -79,7 +79,7 @@ Sub B_experiments()
     
     Range("A1:G2").Select
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$G$2"), , xlYes).Name = _
-        "experiments"
+        "experiment"
     
 End Sub
 
@@ -98,10 +98,18 @@ Sub C_measu_steps()
 
     Range("B1").Select
     ActiveCell.FormulaR1C1 = "measurement_step_number"
+    'Range("B2").Select
+    'ActiveCell.Formula2R1C1 = "=measurement_after_proces_number"
+    'Range("B3").Select
+    'Sheets("3.meas.steps").Select
+    
+    'test
     Range("B2").Select
-    ActiveCell.Formula2R1C1 = "=measurement_after_proces_number"
+    ActiveCell.FormulaR1C1 = "1"
     Range("B3").Select
-    Sheets("3.meas.steps").Select
+    ActiveCell.FormulaR1C1 = "2"
+    Range("B2:B3").Select
+    Selection.AutoFill Destination:=Range("B2:B6"), Type:=xlFillDefault
 
     Range("C1").Select
     ActiveCell.FormulaR1C1 = "experiment_name"
@@ -158,7 +166,7 @@ Sub C_measu_steps()
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$J$6"), , xlYes).Name = _
         "Table25"
     Range("Table25[#All]").Select
-    ActiveSheet.ListObjects("Table25").Name = "measurement_steps"
+    ActiveSheet.ListObjects("Table25").Name = "measurement_step"
     
 End Sub
 
@@ -209,7 +217,7 @@ Sub D_processing_steps()
     'ActiveCell.FormulaR1C1 = _
     '    "=IF([@[processing_step_number]] =measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
     ActiveCell.FormulaR1C1 = _
-        "=IF(RC[1]=measurement_steps[@[measurement_step_number]],measurement_steps[@[measurement_step_id]])"
+        "=IF(RC[1]=measurement_step[@[measurement_step_number]],measurement_step[@[measurement_step_id]])"
     Range("D3").Select
     Range("D2").Select
     Selection.AutoFill Destination:=Range("D2:D5"), Type:=xlFillDefault
@@ -267,8 +275,8 @@ Sub D_processing_steps()
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$L$5"), , xlYes).Name = _
-        "processing_steps"
-    Range("processing_steps[#All]").Select
+        "processing_step"
+    Range("processing_step[#All]").Select
     With Selection
         .HorizontalAlignment = xlCenter
     End With
@@ -337,7 +345,7 @@ Sub E_MaterialAdditionSteps()
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$G$6"), , xlYes).Name = _
         "Table32"
     Range("Table32[#All]").Select
-    ActiveSheet.ListObjects("Table32").Name = "material_addition_steps"
+    ActiveSheet.ListObjects("Table32").Name = "material_addition_step"
     
     
 End Sub
@@ -433,7 +441,7 @@ Sub F_slurryMaterial()
     ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$L$6"), , xlYes).Name = _
         "Table33"
     Range("Table33[#All]").Select
-    ActiveSheet.ListObjects("Table33").Name = "slurry_materials"
+    ActiveSheet.ListObjects("Table33").Name = "slurry_material"
     
     Sheets("6.slurry.mater.").Select
     Range("D2").Select
@@ -441,7 +449,7 @@ Sub F_slurryMaterial()
         "=IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R2C5,'5.mater.add.steps'!R2C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R3C5,'5.mater.add.steps'!R3C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R4C5,'5.mater.add.steps'!R4C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R5C5,'5.mater.add.steps'!R5C1,IF('6.slurry.mater.'!RC[-3]='5.mater.add.steps'!R6C5,'5" & _
         ".mater.add.steps'!R6C1)))))" & _
         ""
-    Range("slurry_materials[material_addition_step_id]").Select
+    Range("slurry_material[material_addition_step_id]").Select
     Selection.Copy
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
@@ -462,7 +470,7 @@ Sub G_DeleteSheets(wb As Workbook)
     For Each ws In wb.Worksheets
         ' Check if the sheet name matches any of the target names
         Select Case ws.Name
-            Case "Arbeitsauftrag", "Regression", "Hilfstabelle", "Kalandrieren", "Beschichtung", "Kalibrierung", "QM", "Schlickerherstellung", "Incremental", "IncrementalSheet"
+            Case "Arbeitsauftrag", "Regression", "Hilfstabelle", "Kalandrieren", "Beschichtung", "Kalibrierung", "QM", "Schlickerherstellung", "Incremental"
                 ' Delete the sheet
                 Application.DisplayAlerts = False ' Suppress the confirmation message
                 ws.Unprotect
