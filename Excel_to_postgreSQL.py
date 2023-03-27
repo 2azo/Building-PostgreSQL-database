@@ -15,17 +15,17 @@ def sheets(data, file):
     if(data=='1.projects'):
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='projects', con=engine, if_exists= 'append', index= False) # name is table name 
+        df.to_sql(name='project', con=engine, if_exists= 'append', index= False) # name is table name 
 
     elif(data=='2.experiments'):
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='experiments', con=engine, if_exists= 'append', index= False) # name is table name
+        df.to_sql(name='experiment', con=engine, if_exists= 'append', index= False) # name is table name
     
     elif(data=='3.meas.steps'):
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='measurement_steps', con=engine, if_exists= 'append', index= False) # name is table name 
+        df.to_sql(name='measurement_step', con=engine, if_exists= 'append', index= False) # name is table name 
     
     elif(data=='4.Proces.steps'):
         # df=pd.read_excel(file)
@@ -35,12 +35,12 @@ def sheets(data, file):
     elif(data=='5.mater.add.steps'):
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='material_addition_steps', con=engine, if_exists= 'append', index= False) # name is table name  
+        df.to_sql(name='material_addition_step', con=engine, if_exists= 'append', index= False) # name is table name  
 
     elif(data=='6.slurry.mater.'):
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='slurry_materials', con=engine, if_exists= 'append', index= False) # name is table name      
+        df.to_sql(name='slurry_material', con=engine, if_exists= 'append', index= False) # name is table name      
         
 
 # with pd.ExcelFile(r'C:\Users\mou95504\Desktop\Test\InMiTro_Kathode_1.xlsx') as xls:
