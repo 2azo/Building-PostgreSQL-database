@@ -340,7 +340,7 @@ Sub E_MaterialAdditionSteps()
     Selection.AutoFill Destination:=Range("F2:F7"), Type:=xlFillDefault
     
     Range("G1").Select
-    ActiveCell.FormulaR1C1 = "material_mass"
+    ActiveCell.FormulaR1C1 = "material_mass_g"
     Range("G2").Select
     ActiveCell.Formula2R1C1 = "=Material_add_mass_order"
     
@@ -360,7 +360,6 @@ Sub E_MaterialAdditionSteps()
     Columns("G").SpecialCells(xlBlanks).EntireRow.Delete
 
     ' Replacing processing_step_number with processing_step_id
-    
     ' steps:
     ' move the  processing_step_number column to D10
     ' adding column processing_step_id in D1
@@ -455,7 +454,7 @@ Sub F_slurryMaterial()
     ActiveCell.Formula2R1C1 = "=Slurry_material_type"
     
     Range("K1").Select
-    ActiveCell.FormulaR1C1 = "concentration"
+    ActiveCell.FormulaR1C1 = "concentration_percentage"
     Range("K2").Select
     ActiveCell.Formula2R1C1 = "=Slurry_materials_concentration"
     
