@@ -4,7 +4,7 @@ import os
 import psycopg2
 
 # creating connection
-engine = create_engine("postgresql+psycopg2://postgres:10aabg58@localhost:5432/Electrode_experiment5")
+engine = create_engine("postgresql+psycopg2://postgres:10aabg58@localhost:5432/Electrode_experiment")
 
 # starting by this code to test
 # with pd.ExcelFile(r'C:\Users\mou95504\Desktop\Test\InMiTro_Kathode_1.xlsx') as xls:
@@ -12,10 +12,12 @@ engine = create_engine("postgresql+psycopg2://postgres:10aabg58@localhost:5432/E
 #    df.to_sql(name = 'experiments', con= engine, if_exists='append', index= False)
 
 def sheets(data, file):
-    if(data=='1.projects'):
+    if(data=='1.projects'): 
         # df=pd.read_excel(file)
         df = pd.read_excel(file, sheet_name=data, index_col=None)
-        df.to_sql(name='project', con=engine, if_exists= 'append', index= False) # name is table name 
+        # ensuring only one project in the db
+        if project_counter < 2:
+            df.to_sql(name='project', con=engine, if_exists= 'append', index= False) # name is table name
 
     elif(data=='2.experiments'):
         # df=pd.read_excel(file)
@@ -51,8 +53,10 @@ def sheets(data, file):
 path = r'C:\Users\mou95504\Desktop\Test'
 # Change the directory
 os.chdir(path)
+project_counter = 0
 
 for file in os.listdir():
+    project_counter = project_counter + 1
     # print("hi")
     # Check whether file is in text format or not
     if file.endswith(".xlsx"):

@@ -74,7 +74,18 @@ solved_in SMALLINT REFERENCES slurry_material(slurry_material_id),
 FOREIGN KEY (experiment_name,project_name) REFERENCES experiment(experiment_name,project_name)
 );
  
-ALTER TABLE material_addition_step
-ADD CONSTRAINT adding_foreign_key_in_material_addition_step
-FOREIGN KEY (slurry_material_id)
-REFERENCES slurry_material(slurry_material_id);
+-- First populate the database, then add this constraint
+
+-- ALTER TABLE material_addition_step
+-- ADD CONSTRAINT adding_foreign_key_in_material_addition_step
+-- FOREIGN KEY (slurry_material_id)
+-- REFERENCES slurry_material(slurry_material_id);
+
+-- New experiment addition order (after adding the final constraint) :
+-- 1. Project table complete
+-- 2. Experiment table complete
+-- 3. Measurement step table complete
+-- 4. Processing step table complete
+-- 5. Material addition step table -> all except for "Slurry_material_id"
+-- 6. Slurry material table complete
+-- 7. Material addition step table -> only "Slurry_material_id"

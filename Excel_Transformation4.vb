@@ -523,6 +523,15 @@ Sub F_slurryMaterial()
 
     Range("L10:L14").Select
     Selection.Delete Shift:=xlUp
+
+    'replacing the zeroes in solved_in column with white space
+    
+    Sheets("6.slurry.mater.").Select
+    Range("slurry_material[[#All],[solved_in]]").Select
+    Selection.Replace What:="0", Replacement:="", LookAt:=xlWhole, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    ActiveWorkbook.Save
     
 End Sub
 
