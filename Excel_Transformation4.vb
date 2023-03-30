@@ -98,10 +98,6 @@ Sub C_measu_steps()
 
     Range("B1").Select
     ActiveCell.FormulaR1C1 = "measurement_step_number"
-    'Range("B2").Select
-    'ActiveCell.Formula2R1C1 = "=measurement_after_proces_number"
-    'Range("B3").Select
-    'Sheets("3.meas.steps").Select
     
     'test
     Range("B2").Select
@@ -194,7 +190,7 @@ Sub D_processing_steps()
     Range("B2").Select
     ActiveCell.FormulaR1C1 = "=experiment_name"
     Range("B2").Select
-    Selection.AutoFill Destination:=Range("B2:B5")
+    Selection.AutoFill Destination:=Range("B2:B6")
     
     Range("C1").Select
     ActiveCell.FormulaR1C1 = "project_name"
@@ -202,8 +198,8 @@ Sub D_processing_steps()
     Range("C2").Select
     ActiveCell.FormulaR1C1 = "=project_name"
     Range("C2").Select
-    Selection.AutoFill Destination:=Range("C2:C5")
-    Range("C2:C5").Select
+    Selection.AutoFill Destination:=Range("C2:C6")
+    Range("C2:C6").Select
     ActiveCell.FormulaR1C1 = "=project_name"
     
     Range("D1").Select
@@ -216,7 +212,7 @@ Sub D_processing_steps()
     Range("E3").Select
     ActiveCell.FormulaR1C1 = "2"
     Range("E2:E3").Select
-    Selection.AutoFill Destination:=Range("E2:E5"), Type:=xlFillDefault
+    Selection.AutoFill Destination:=Range("E2:E6"), Type:=xlFillDefault
     
     Range("D2").Select
     'ActiveCell.FormulaR1C1 = _
@@ -225,20 +221,12 @@ Sub D_processing_steps()
         "=IF(RC[1]=measurement_step[@[measurement_step_number]],measurement_step[@[measurement_step_id]])"
     Range("D3").Select
     Range("D2").Select
-    Selection.AutoFill Destination:=Range("D2:D5"), Type:=xlFillDefault
+    Selection.AutoFill Destination:=Range("D2:D6"), Type:=xlFillDefault
 
     Range("F1").Select
     ActiveCell.FormulaR1C1 = "description"
     Range("F2").Select
     ActiveCell.Formula2R1C1 = "=Description"
-    
-    'Sheets("Schlickerherstellung").Select
-    'Range("B38:B42").Select
-    'Application.CutCopyMode = False
-    'ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$38:$B$42"), , xlYes).Name = _
-    '    "Description"
-    'Range("Table14[[#All],[Beschreibung]]").Select
-    'ActiveSheet.ListObjects("Table14").Name = "Description"
 
     Sheets("4.proces.steps").Select
     Range("F2").Select
@@ -274,17 +262,26 @@ Sub D_processing_steps()
     Range("L2").Select
     ActiveCell.Formula2R1C1 = "=Processing_notes"
     
-    Range("A1:L5").Select
+    Range("A1:L6").Select
     Range("L1").Activate
     Selection.Copy
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$L$5"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$L$6"), , xlYes).Name = _
         "processing_step"
     Range("processing_step[#All]").Select
     With Selection
         .HorizontalAlignment = xlCenter
     End With
+
+    ' deleting exrtra rows
+    
+    Dim cel As Range
+    For Each cel In Range("F10:F" & Cells(Rows.Count, "F").End(xlUp).Row)
+        If cel.Value = 0 Then
+            cel.EntireRow.Delete
+        End If
+    Next cel
         
 End Sub
 
@@ -659,93 +656,93 @@ Sub Tables_names()
     ActiveSheet.ListObjects("Table11").Name = "Material_add_mass_order"
     
     ActiveWindow.SmallScroll Down:=6
-    Range("A38:A42").Select
+    Range("A38:A43").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$38:$A$42"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$38:$A$43"), , xlYes).Name = _
         "Table12"
     Range("Table12[[#All],[nach Zugabe]]").Select
     ActiveSheet.ListObjects("Table12").Name = "Processing_after_add_step"
     
-    Range("B38:C42").Select
+    Range("B38:C43").Select
     Selection.UnMerge
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$38:$B$42"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$38:$B$43"), , xlYes).Name = _
         "Description"
     
-    Range("D38:D42").Select
+    Range("D38:D43").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$D$38:$D$42"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$D$38:$D$43"), , xlYes).Name = _
         "Table15"
     Range("Table15[[#All],[Drehzahl 1 '[U/min']]]").Select
     ActiveSheet.ListObjects("Table15").Name = "Speed1"
     
-    Range("E38:E42").Select
+    Range("E38:E43").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$E$38:$E$42"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$E$38:$E$43"), , xlYes).Name = _
         "Table16"
     Range("Table16[[#All],[Drehzahl 2 '[U/min']]]").Select
     ActiveSheet.ListObjects("Table16").Name = "Speed2"
     
-    Range("F38:F42").Select
+    Range("F38:F43").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$F$38:$F$42"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$F$38:$F$43"), , xlYes).Name = _
         "Table17"
     Range("Table17[[#All],[Zeit '[min']]]").Select
     ActiveSheet.ListObjects("Table17").Name = "Time"
     
-    Range("G38:G42").Select
+    Range("G38:G43").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$G$38:$G$42"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$G$38:$G$43"), , xlYes).Name = _
         "Table18"
     Range("Table18[[#All],[Kommentar]]").Select
     ActiveSheet.ListObjects("Table18").Name = "Processing_notes"
     
     Sheets("QM").Select
     ActiveSheet.Unprotect
-    Range("A9:A13").Select
+    Range("A9:A14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$9:$A$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$9:$A$14"), , xlYes).Name = _
         "Table19"
     Range("Table19[[#All],[nach Arbeitsschritt]]").Select
     ActiveSheet.ListObjects("Table19").Name = "measurement_after_proces_number"
     
-    Range("B9:B13").Select
+    Range("B9:B14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$9:$B$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$9:$B$14"), , xlYes).Name = _
         "Table20"
     Range("Table20[[#All],[Viskosität '[1/s']]]").Select
     ActiveSheet.ListObjects("Table20").Name = "Vico_high"
     
-    Range("C9:C13").Select
+    Range("C9:C14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$C$9:$C$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$C$9:$C$14"), , xlYes).Name = _
         "Table21"
     Range("Table21[[#All],[Viskosität '[1000/s']]]").Select
     ActiveSheet.ListObjects("Table21").Name = "Visco_low"
     
-    Range("D9:D13").Select
+    Range("D9:D14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$D$9:$D$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$D$9:$D$14"), , xlYes).Name = _
         "Table22"
     Range("Table22[[#All],[Grindometer '[µm']]]").Select
     ActiveSheet.ListObjects("Table22").Name = "Grindo"
     
-    Range("E9:E13").Select
+    Range("E9:E14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$E$9:$E$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$E$9:$E$14"), , xlYes).Name = _
         "Table23"
     Range("Table23[[#All],[FG '[m%']]]").Select
     ActiveSheet.ListObjects("Table23").Name = "Solid_content"
     
-    Range("F9:F13").Select
+    Range("F9:F14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$F$9:$F$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$F$9:$F$14"), , xlYes).Name = _
         "Table24"
     Range("Table24[[#All],[Schlickertemperatur '[°C']]]").Select
     ActiveSheet.ListObjects("Table24").Name = "Temperature"
     
-    Range("G9:G13").Select
+    Range("G9:G14").Select
     Application.CutCopyMode = False
-    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$G$9:$G$13"), , xlYes).Name = _
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$G$9:$G$14"), , xlYes).Name = _
         "Table25"
     Range("Table25[[#All],[Sonstiges]]").Select
     ActiveSheet.ListObjects("Table25").Name = "Measurement_notes"
@@ -804,9 +801,9 @@ Sub IncrementalSheet(Path)
         Range("B3").Select
         Selection.FormulaR1C1 = processing_counter + 1
         Range("B2:B3").Select
-        Selection.AutoFill Destination:=Range("B2:B5"), Type:=xlFillDefault
-        Range("B2:B5").Select
-        processing_counter = Range("B5")
+        Selection.AutoFill Destination:=Range("B2:B6"), Type:=xlFillDefault
+        Range("B2:B6").Select
+        processing_counter = Range("B6")
         
         ' material_addition_step_counter
         Range("C1").Select
@@ -837,8 +834,8 @@ Sub IncrementalSheet(Path)
         ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$A$6"), , xlYes).Name = _
         "measurement_steps_id"
         
-        Range("B1:B5").Select
-        ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$1:$B$5"), , xlYes).Name = _
+        Range("B1:B6").Select
+        ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$1:$B$6"), , xlYes).Name = _
         "processing_step_id"
         
         Range("C1:C7").Select
