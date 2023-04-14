@@ -1,0 +1,21 @@
+import pandas as pd
+import numpy as np
+
+from sklearn.linear_model import LinearRegression
+
+df = pd.read_csv('C:\\Users\\mou95504\\Desktop\\code\\Advertising.csv')
+print(df)
+
+x = df[['TV']].values
+y = df[['Sales']].values
+
+reg = LinearRegression()
+
+reg.fit(x,y)
+
+reg.coef_
+
+reg.intercept_
+
+reg.predict(np.array([[100]]))
+
